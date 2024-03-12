@@ -3,8 +3,10 @@
 import { useLoaderData } from "react-router-dom";
 import { getOrder } from "../../servers/apiRestaurant";
 import { calcMinutesLeft, formatCurrency, formatDate } from "../../utils/helpers";
+import Confetti from "react-confetti";
+import { CSSTransition } from "react-transition-group";
+import { useEffect, useState } from "react";
 
-//
 //   id: "ABCDEF",
 //   customer: "Jonas",
 //   phone: "123456789",
@@ -41,12 +43,24 @@ import { calcMinutesLeft, formatCurrency, formatDate } from "../../utils/helpers
 
 function Order() {
   const order = useLoaderData();
-  // Everyone can search for all orders, so for privacy reasons we're gonna gonna exclude names or address, these are only for the restaurant staff
   const { id, status, priority, priorityPrice, orderPrice, estimatedDelivery, cart } = order;
   const deliveryIn = calcMinutesLeft(estimatedDelivery);
+  const [show, setShow] = useState(true);
+  // const { width, height } = useWindowSize();
 
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShow(false);
+    }, 8000);
+
+    return () => clearTimeout(timer); // Timer to'xtatilganda
+  }, []);
   return (
     <div>
+      <CSSTransition in={show} timeout={200} classNames="confetti" unmountOnExit>
+        <Confetti numberOfPieces={1000} duration={500} className=" absolute z-0 w-full h-screen" />
+      </CSSTransition>
+
       <div className=" flex items-center my-8 justify-between">
         <h2 className=" text-lg font-semibold tracking-wide">Status</h2>
 

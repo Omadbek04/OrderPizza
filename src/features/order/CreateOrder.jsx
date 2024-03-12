@@ -48,7 +48,7 @@ function CreateOrder() {
                 paddingBottom: "20px",
               }}
               inputProps={{
-                name: "number",
+                name: "phone",
               }}
               country={"uz"}
             />

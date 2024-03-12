@@ -8,6 +8,7 @@ function Button({ children, to, disabled, type, onClick }) {
     primary: `${base} bg-yellow-400 hover:bg-yellow-300 ring-yellow-400`,
     secondary: `${base} bg-stone-50 border-2 border-stone-300 hover:bg-stone-300  ring-stone-300 text-stone-400 hover:text-stone-800`,
     small: `${base} py-2 px-4 text-xs bg-yellow-400 hover:bg-yellow-300 ring-yellow-400 text-stone-800`,
+    rounded: `${base} rounded-full w-8 h-8 flex items-center justify-center p-3 text-lg font-semibold bg-yellow-400 hover:bg-yellow-300 ring-yellow-400`,
   };
 
   if (to) {

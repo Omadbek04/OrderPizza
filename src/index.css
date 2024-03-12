@@ -47,5 +47,5 @@ body {
 }
 *::selection {
   background-color: rgb(243, 243, 6);
-  color: white;
+  color: #333;
 }

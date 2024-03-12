@@ -2,39 +2,50 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   cart: [],
-  quantity: 0,
-  total: 0,
 };
 
 const cartSlice = createSlice({
   name: "cart",
   initialState,
   reducers: {
-    deleteItem: (state, action) => {},
+    deleteItem: (state, action) => {
+      state.cart = state.cart.filter((item) => item.pizzaId != action.payload);
+    },
     addItem: (state, action) => {
       state.cart = [...state.cart, action.payload];
     },
-    clearCart: (state, action) => {},
-    increaseQuantitiy: (state, action) => {},
-    decreaseQuantitiy: (state, action) => {},
-    getTotalQuantitiy: (state) => {
-      state.quantity = state.cart.reduce((prev, current) => (prev += current.quantity), 0);
+    clearCart: (state) => {
+      state.cart = [];
     },
-    getTotalPrice: (state,action) => {
-      state.total = state.quantity * action.payload;
+    increaseQuantitiy: (state, action) => {
+      const item = state.cart.find((item) => item.pizzaId == action.payload);
+      item.quantity++;
+      item.totalPrice = item.quantity * item.unitPrice;
+    },
+    decreaseQuantitiy: (state, action) => {
+      const item = state.cart.find((item) => item.pizzaId == action.payload);
+      item.quantity--;
+      item.totalPrice = item.quantity * item.unitPrice;
+      // if 0 delete element form cart
+      if (item.quantity < 1) {
+        cartSlice.caseReducers.deleteItem(state,action)
+        // state.cart = state.cart.filter((item) => item.pizzaId != action.payload);
+      }
     },
   },
 });
 
-export const { deleteItem, addItem, clearCart, increaseQuantitiy, decreaseQuantitiy, getTotalQuantitiy, getTotalPrice } = cartSlice.actions;
+export const { deleteItem, addItem, clearCart, increaseQuantitiy, decreaseQuantitiy } = cartSlice.actions;
 
 export default cartSlice.reducer;
-// cart: [
-//   {
-//     pizzaId: 123,
-//     name: "Margarita",
-//     unitPrice: 12,
-//     quantitiy: 2,
-//     totalPrice: 40,
-//   },
-// ],
+
+export function getTotalQuantitiy(state) {
+  return state.cart.cart.reduce((prev, current) => (prev += current.quantity), 0);
+}
+export function getTotalPrice(state) {
+  return state.cart.cart.reduce((prev, current) => (prev += +current.totalPrice), 0);
+}
+
+export const getCurrentItemQuantity = (id) => (state) => {
+  return state.cart.cart.find((item) => item.pizzaId == id)?.quantity || 0;
+};

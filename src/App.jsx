@@ -40,24 +40,29 @@ function App() {
         },
         {
           path: "menu",
-          element:
-          <PrivetRoute>
-          <Menu />
-          </PrivetRoute>,
+          element: (
+            <PrivetRoute>
+              <Menu />
+            </PrivetRoute>
+          ),
           loader: menuLoader,
           errorElement: <NotFound />,
         },
         {
           path: "cart",
-          element: <PrivetRoute>
-          <Cart />
-          </PrivetRoute>,
+          element: (
+            <PrivetRoute>
+              <Cart />
+            </PrivetRoute>
+          ),
         },
         {
           path: "order/:orderId",
-          element:<PrivetRoute>
-          <Order />
-          </PrivetRoute>,
+          element: (
+            <PrivetRoute>
+              <Order />
+            </PrivetRoute>
+          ),
           errorElement: <NotFound />,
           loader: orderLoader,
         },

@@ -18,7 +18,7 @@ function CreateOrder() {
   const totalPrice = useSelector(getTotalPrice);
   const [withPriority, setWithPriority] = useState(false);
   const { username } = useSelector((state) => state.user);
-  const [phone, setPhone] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
   if (!cart.length) {
     return <EmptyCart />;
   }
@@ -36,7 +36,22 @@ function CreateOrder() {
         <div className=" flex items-center gap-2 mb-8">
           <label className=" basis-40">Phone number</label>
           <div className=" grow ">
-            <PhoneInput className="number  " inputStyle={{ width: "100%", outline: "none", border: "none", borderRadius: "20px", paddingTop: "20px", paddingBottom: "20px" }} type="tel" name="phone" country={"uz"} required />
+            <PhoneInput
+              value={phoneNumber}
+              onChange={(phone) => setPhoneNumber(phone)}
+              inputStyle={{
+                width: "100%",
+                outline: "none",
+                border: "none",
+                borderRadius: "20px",
+                paddingTop: "20px",
+                paddingBottom: "20px",
+              }}
+              inputProps={{
+                name: "number",
+              }}
+              country={"uz"}
+            />
           </div>
         </div>
 
@@ -68,8 +83,7 @@ function CreateOrder() {
 export async function action({ request }) {
   const formData = await request.formData();
   const object = Object.fromEntries(formData);
-  const newOrder = { ...object, cart: JSON.parse(object.cart), priority: object.priority == "true" };
-  console.log(newOrder);
+  const newOrder = { ...object, cart: JSON.parse(object.cart), priority: object.priority == "true", number: object.number };
   const order = await createOrder(newOrder);
   store.dispatch({ type: "cart/clearCart" });
   return redirect(`/order/${order.id}`);
